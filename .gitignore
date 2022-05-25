@@ -1,0 +1,6 @@
+.ccls-cache/
+*.o
+*.exe
+*.inp
+*.out
+test.*
