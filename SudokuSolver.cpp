@@ -185,6 +185,7 @@ int main(int argc, char const *argv[]) {
   }
   else if (argc == 1) {
     std::cerr << "\t (X) Missing parameters! Type \"SudokuSolver -h\" for more information." << "\n\n";
+    return 0;
   }
   else if (argc < 3) {
     const std::string option = argv[1];
