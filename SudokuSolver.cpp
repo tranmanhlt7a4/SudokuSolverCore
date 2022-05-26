@@ -178,7 +178,7 @@ bool nextEmptyCell();
 //Main function
 //Program will start here.
 int main(int argc, char const *argv[]) {
-  quizFileName = "test1213.quiz";
+  quizFileName = "test.quiz";
 
   initBlocks();
   initUsed();
@@ -186,8 +186,10 @@ int main(int argc, char const *argv[]) {
   nextEmptyCell();
   solve(currentCell);
 
+  showHelp();
+
   if (!haveAnswer) {
-	  std::cout << "Opps!" << "\n\n";
+	  std::cout << "\t (!) INFO: Opps! We can't find the answer for this quiz." << "\n\n";
   }
   else {
     std::cout << "\t (!) INFO: Found " << numAnswer << " answer(s)!" << '\n';
