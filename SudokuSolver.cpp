@@ -183,6 +183,9 @@ int main(int argc, char const *argv[]) {
     quizFileName = argv[1];
     maximumResult = std::stoi(argv[2]);
   }
+  else if (argc == 1) {
+    std::cerr << "\t (X) Missing parameters! Type \"SudokuSolver -h\" for more information." << "\n\n";
+  }
   else if (argc < 3) {
     const std::string option = argv[1];
     if (option == "-h" || option == "--help") {
