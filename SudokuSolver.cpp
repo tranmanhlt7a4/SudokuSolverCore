@@ -68,6 +68,7 @@ Block blockList[QUIZ_SIZE]; //Store the position list of blocks in Sudoku quiz.
 int used[QUIZ_SIZE]; //Store the number of times a number occurs (each number can only be used up to nine times).
 bool haveAnswer = false; //True if the quiz has answer, else false.
 int numAnswer = 0; //Store the number of answers available.
+int maximumResult = 100000000; //Store the maximum answer have to find.
 std::string quizFileName = ""; //Store the quiz filename.
 
 //All functions prototypes
@@ -178,15 +179,31 @@ bool nextEmptyCell();
 //Main function
 //Program will start here.
 int main(int argc, char const *argv[]) {
-  quizFileName = "test.quiz";
+  if (argc == 3) {
+    quizFileName = argv[1];
+    maximumResult = std::stoi(argv[2]);
+  }
+  else if (argc < 3) {
+    const std::string option = argv[1];
+    if (option == "-h" || option == "--help") {
+      showHelp();
+    }
+    else {
+      std::cerr << "\t (X) Missing parameters! Type \"SudokuSolver -h\" for more information." << "\n\n";
+    }
+
+    return 0;
+  }
+  else {
+    std::cerr << "\t (X) Too many parameters! Type \"SudokuSolver -h\" for more information." << "\n\n";
+    return 0;
+  }
 
   initBlocks();
   initUsed();
   readQuiz(quizFileName);
   nextEmptyCell();
   solve(currentCell);
-
-  showHelp();
 
   if (!haveAnswer) {
 	  std::cout << "\t (!) INFO: Opps! We can't find the answer for this quiz." << "\n\n";
@@ -315,6 +332,10 @@ bool checkAll(const int& value) {
 }
 
 void solve(Point cell) {
+  if (numAnswer >= maximumResult) {
+    return;
+  }
+
   for (int value = 1; value < QUIZ_SIZE; value++) {
     if (used[value] < 9 && checkAll(value)) {
       sudokuTable[cell.x][cell.y] = value;
