@@ -72,27 +72,20 @@ std::string quizFileName = ""; //Store the quiz filename.
 
 //All functions prototypes
 
-std::string getFileName(const std::string& dir, const bool& haveExtension = true);
-std::string getFileExtension(const std::string& dir);
-
+//Functions to initialize global variables.
 /*
- * This function finds and stores the coordinate of the next empty cell that needs to solve.
- * If current cell is not solved, this function will do nothing.
- * No parameters needed.
- * Changes currentCell variable.
- * Returns true if the cell is at the end of the Sudoku table, else returns false.
- * If this function returns false (the cell is at the end of the Sudoku table), it is the
- * answer for that Sudoku quiz.
- */
-bool nextEmptyCell();
-
-/*
- * This function initialize the coordinate of all blocks (there are 9 blocks) in the Sudoku quiz.
+ * This function initializes the coordinate of all blocks (there are 9 blocks) in the Sudoku quiz.
  * No parameters needed.
  * Store values in array blockList.
  * Do not return anything.
  */
 void initBlocks();
+/*
+ * This function initializes the array to count the number of times a number is used.
+ * No parameters needed.
+ * Store values in array used.
+ * Do not return anything.
+ */
 void initUsed();
 
 //Functions to check if the value is correct in current cell
@@ -121,6 +114,7 @@ bool checkBlock(const int& value);
  */
 bool checkAll(const int& value);
 
+//Function solves Sudoku quiz.
 /*
  * This function is used the Backtracking algorithm to solve the Sudoku quiz.
  * If it find the answer for that Sudoku quiz, it will write it to file.
@@ -129,17 +123,12 @@ bool checkAll(const int& value);
  */
 void solve(Point cell);
 
-/*
- * This function is used to find the block in which the current cell is.
- * Parameter: the cell need to find (default value is currentCell).
- * Return the block in which the current cell is.
- */
-Block findBlock(const Point& cell = currentCell);
-
+//Functions relative to the file
 /*
  * This function is used to read Sudoku quiz in a file *.quiz.
  * Parameter: direction to that file.
  * If can't read file will cancel the program with exit code: -2.
+ * Exit code: -1 if the file different from *.quiz.
  * Do not return anything.
  */
 void readQuiz(const std::string& dir);
@@ -149,7 +138,62 @@ void readQuiz(const std::string& dir);
  * If can't read file will cancel the program with exit code: -3.
  * Do not return anything.
  */
-void writeAnswer(const std::string& fileName = getFileName(quizFileName, false));
+void writeAnswer(const std::string& fileName = quizFileName);
+
+//Other functions
+/*
+ * This function is used to find the block in which the current cell is.
+ * Parameter: the cell need to find (default value is currentCell).
+ * Return the block in which the current cell is.
+ */
+Block findBlock(const Point& cell = currentCell);
+/*
+ * This function is used to get the filename from file direction.
+ * Parameter:
+ *  dir: file direction.
+ *  haveExtension: true if you want to get file name and extension, else pass false.
+ * Returns filename.
+ */
+std::string getFileName(const std::string& dir, const bool& haveExtension = true);
+/*
+ * This function is used to get the file extension from file direction.
+ * Parameter:
+ *  dir: file direction.
+ * Returns file extension.
+ */
+std::string getFileExtension(const std::string& dir);
+/*
+ * This function finds and stores the coordinate of the next empty cell that needs to solve.
+ * If current cell is not solved, this function will do nothing.
+ * No parameters needed.
+ * Changes currentCell variable.
+ * Returns true if the cell is at the end of the Sudoku table, else returns false.
+ * If this function returns false (the cell is at the end of the Sudoku table), it is the
+ * answer for that Sudoku quiz.
+ */
+bool nextEmptyCell();
+
+//Main function
+//Program will start here.
+int main(int argc, char const *argv[]) {
+  quizFileName = "test1213.quiz";
+
+  initBlocks();
+  initUsed();
+  readQuiz(quizFileName);
+  nextEmptyCell();
+  solve(currentCell);
+
+  if (!haveAnswer) {
+	  std::cout << "Opps!" << "\n\n";
+  }
+  else {
+    std::cout << "\t (!) INFO: Found " << numAnswer << " answer(s)!" << '\n';
+  }
+  return 0;
+}
+
+//All functions define.
 
 void initBlocks() {
   int x = 1, y = 1;
@@ -179,41 +223,6 @@ void initUsed() {
     }
   }
 }
-bool nextEmptyCell() {
-  if (sudokuTable[currentCell.x][currentCell.y] == 0) {
-    return true;
-  }
-
-  if (currentCell.x == 9 && currentCell.y == 9) {
-    return false;
-  }
-
-  while (currentCell.x < QUIZ_SIZE) {
-    while (currentCell.y < QUIZ_SIZE - 1) {
-      currentCell.y++;
-
-      if (sudokuTable[currentCell.x][currentCell.y] == 0) {
-        return true;
-      }
-    }
-    currentCell.x++;
-    currentCell.y = 0;
-  }
-
-  return false;
-}
-
-Block findBlock(const Point& cell) {
-  for (int i = 1; i < 11; i++) {
-    if (blockList[i].top.x <= cell.x && cell.x <= blockList[i].bottom.x) {
-      if (blockList[i].top.y <= cell.y && cell.y <= blockList[i].bottom.y) {
-        return blockList[i];
-      }
-    }
-  }
-
-  return Block();
-}
 
 bool checkRow(const int& value) {
   int numAppear[QUIZ_SIZE];
@@ -234,7 +243,6 @@ bool checkRow(const int& value) {
 
   return true;
 }
-
 bool checkCol(const int& value) {
   int numAppear[QUIZ_SIZE];
   for (int i = 1; i < QUIZ_SIZE; i++) {
@@ -259,7 +267,6 @@ bool checkCol(const int& value) {
 
   return true;
 }
-
 bool checkBlock(const int& value) {
   int numAppear[QUIZ_SIZE];
   for (int i = 1; i < QUIZ_SIZE; i++) {
@@ -283,7 +290,6 @@ bool checkBlock(const int& value) {
 
   return true;
 }
-
 bool checkAll(const int& value) {
   return (checkBlock(value) && checkRow(value) && checkCol(value));
 }
@@ -331,10 +337,9 @@ void readQuiz(const std::string& dir) {
     exit(-2);
   }
 }
-
 void writeAnswer(const std::string& fileName) {
   const std::string ext = ".solved";
-  const std::string file = fileName + "_" + std::to_string(numAnswer) + ext;
+  const std::string file = getFileName(fileName, false) + "_" + std::to_string(numAnswer) + ext;
 
   std::ofstream ans(file, std::ios::out);
   if (ans.is_open()) {
@@ -352,6 +357,17 @@ void writeAnswer(const std::string& fileName) {
   }
 }
 
+Block findBlock(const Point& cell) {
+  for (int i = 1; i < 11; i++) {
+    if (blockList[i].top.x <= cell.x && cell.x <= blockList[i].bottom.x) {
+      if (blockList[i].top.y <= cell.y && cell.y <= blockList[i].bottom.y) {
+        return blockList[i];
+      }
+    }
+  }
+
+  return Block();
+}
 std::string getFileName(const std::string& dir, const bool& haveExtension) {
   int pos = dir.find_last_of("/\\");
   std::string result = "";
@@ -366,26 +382,30 @@ std::string getFileName(const std::string& dir, const bool& haveExtension) {
 
   return result;
 }
-
 std::string getFileExtension(const std::string& dir) {
   int pos = dir.find_last_of(".");
   return dir.substr(pos + 1);
 }
-
-int main(int argc, char const *argv[]) {
-  quizFileName = "test.quiz";
-
-  initBlocks();
-  initUsed();
-  readQuiz(quizFileName);
-  nextEmptyCell();
-  solve(currentCell);
-
-  if (!haveAnswer) {
-	  std::cout << "Opps!" << "\n\n";
+bool nextEmptyCell() {
+  if (sudokuTable[currentCell.x][currentCell.y] == 0) {
+    return true;
   }
-  else {
-    std::cout << "\t (!) INFO: Found " << numAnswer << " answer(s)!" << '\n';
+
+  if (currentCell.x == 9 && currentCell.y == 9) {
+    return false;
   }
-  return 0;
+
+  while (currentCell.x < QUIZ_SIZE) {
+    while (currentCell.y < QUIZ_SIZE - 1) {
+      currentCell.y++;
+
+      if (sudokuTable[currentCell.x][currentCell.y] == 0) {
+        return true;
+      }
+    }
+    currentCell.x++;
+    currentCell.y = 0;
+  }
+
+  return false;
 }
