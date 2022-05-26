@@ -72,6 +72,8 @@ std::string quizFileName = ""; //Store the quiz filename.
 
 //All functions prototypes
 
+void showHelp();
+
 //Functions to initialize global variables.
 /*
  * This function initializes the coordinate of all blocks (there are 9 blocks) in the Sudoku quiz.
@@ -194,6 +196,22 @@ int main(int argc, char const *argv[]) {
 }
 
 //All functions define.
+
+void showHelp() {
+  std::cout << "+-----------------------------------------+" << '\n';
+  std::cout << "|                   Help                  |" << '\n';
+  std::cout << "+-----------------------------------------+" << '\n';
+
+  std::cout << "\nThis program is used to solve 9x9 Sudoku quiz!" << '\n';
+  std::cout << "Written by: Tran Quang Manh." << '\n';
+  std::cout << "8:46 PM Tuesday, 24-05-2022." << '\n';
+
+  std::cout << "\nCommand:" << '\n';
+  std::cout << "  SudokuSolver.exe [option] <file_name> <maximum_result>" << '\n';
+  std::cout << "\nOption:" << '\n';
+  std::cout << "-h, --help      SHOW THIS HELP." << '\n';
+  std::cout << "\nSource code can be found at: https://github.com/tranmanhlt7a4/SudokuSolverCore" << '\n';
+}
 
 void initBlocks() {
   int x = 1, y = 1;
