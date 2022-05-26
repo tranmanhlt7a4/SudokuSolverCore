@@ -74,8 +74,6 @@ std::string quizFileName = ""; //Store the quiz filename.
 
 std::string getFileName(const std::string& dir, const bool& haveExtension = true);
 std::string getFileExtension(const std::string& dir);
-std::string left(const std::string& str, const int& len = 1);
-std::string right(const std::string& str, const int& len = 1);
 
 /*
  * This function finds and stores the coordinate of the next empty cell that needs to solve.
@@ -373,16 +371,6 @@ std::string getFileExtension(const std::string& dir) {
   int pos = dir.find_last_of(".");
   return dir.substr(pos + 1);
 }
-
-std::string left(const std::string& str, const int& len) {
-  return str.substr(0, len);
-}
-
-std::string right(const std::string& str, const int& len) {
-  return str.substr(str.size() - len);
-}
-
-
 
 int main(int argc, char const *argv[]) {
   quizFileName = "test.quiz";
