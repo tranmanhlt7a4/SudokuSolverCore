@@ -9,7 +9,7 @@
 <h2>How to use:</h2>
 <p>
   This is demo: <br />
-  https://github.com/tranmanhlt7a4/SudokuSolverCore/assets/demo.mp4 <br />
+  https://user-images.githubusercontent.com/68019114/200841614-46b88eed-8a8b-4583-bf05-47d4ad43eb76.mp4 <br />
 
   This tool only run in CLI! <br />
 
@@ -19,7 +19,9 @@
   <strong>NOTE:</strong><br />
   + You must create a plain text file to save the Sudoku table as input. All empty cells must be set to 0, the cell value will be separate from others with a space. <br />
   Example: With this table: <br />
-  https://github.com/tranmanhlt7a4/SudokuSolverCore/assets/Example_table.png <br />
+  ![Example_table](https://user-images.githubusercontent.com/68019114/200841738-c5ea8d46-f779-44e8-8947-9fb19d818b72.png) <br />
   You have to create input file like this: <br />
-  https://github.com/tranmanhlt7a4/SudokuSolverCore/assets/Example_file.png <br />
+  ![Example_file](https://user-images.githubusercontent.com/68019114/200841714-7cd4072c-b9c9-4ce6-b35b-52753f495dcc.png) <br />
 </p>
+
+
