@@ -9,7 +9,7 @@
 <h2>How to use:</h2>
 <p>
   This is demo: <br />
-  https://user-images.githubusercontent.com/68019114/200841614-46b88eed-8a8b-4583-bf05-47d4ad43eb76.mp4 <br />
+  https://youtu.be/VNF1N_iMPfU <br />
 
   This tool only run in CLI! <br />
 
