@@ -362,12 +362,12 @@ void solve(Point cell) {
 }
 
 void readQuiz(const std::string& dir) {
-  std::string fileExt = getFileExtension(getFileName(dir));
-  if (fileExt == "" || fileExt != "quiz") {
-    std::cerr << "\t (X) Error: Invalid file format! Type \"SudokuSolver -h\" for more infomation.\n\n";
-    exit(-1);
-  }
-
+  // std::string fileExt = getFileExtension(getFileName(dir));
+  // if (fileExt == "" || fileExt != "quiz") {
+  //   std::cerr << "\t (X) Error: Invalid file format! Type \"SudokuSolver -h\" for more infomation.\n\n";
+  //   exit(-1);
+  // }
+  //
   std::ifstream quiz(dir.c_str(), std::ios::in);
   if (quiz.is_open()) {
     for (int i = 1; i < QUIZ_SIZE; i++) {
